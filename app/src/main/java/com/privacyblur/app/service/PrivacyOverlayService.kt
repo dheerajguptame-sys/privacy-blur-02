@@ -76,12 +76,19 @@ class PrivacyOverlayService : Service() {
                 repository.protectedPackagesFlow,
                 repository.revealModeFlow,
                 repository.revealDurationFlow,
-                repository.revealAreaSizeFlow,
-                repository.privacyStrengthFlow
-            ) { enabled, packages, mode, duration, size, strength ->
-                isProtectionEnabled = enabled
-                protectedPackages = packages
-                overlayView?.updateSettings(mode, duration, size, strength)
+                repository.revealAreaSizeFlow
+            ) { enabled, packages, mode, duration, size ->
+                arrayOf(enabled, packages, mode, duration, size)
+            }.combine(repository.privacyStrengthFlow) { values, strength ->
+                @Suppress("UNCHECKED_CAST")
+                isProtectionEnabled = values[0] as Boolean
+                protectedPackages = values[1] as Set<String>
+                overlayView?.updateSettings(
+                    values[2] as com.privacyblur.app.data.RevealMode,
+                    values[3] as Long,
+                    values[4] as Float,
+                    strength
+                )
                 evaluateOverlayState()
             }.collect {}
         }
@@ -195,11 +202,11 @@ class PrivacyOverlayService : Service() {
         )
 
         val notification: Notification = NotificationCompat.Builder(this, PrivacyBlurApplication.CHANNEL_ID_PROTECTION)
-            .setSmallIcon(R.drawable.ic_notification_privacy)
+            .setSmallIcon(R.drawable.ic_qs_privacy)
             .setContentTitle(getString(R.string.notification_title))
             .setContentText(getString(R.string.notification_content))
             .setContentIntent(openAppIntent)
-            .addAction(R.drawable.ic_stop, getString(R.string.notification_action_stop), stopIntent)
+            .addAction(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.notification_action_stop), stopIntent)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
