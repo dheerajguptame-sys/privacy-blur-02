@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Privacy Blur</string>
+    <string name="app_tagline">Screen privacy shield for WhatsApp and sensitive apps</string>
+    <string name="tile_label">Privacy Blur</string>
+    
+    <!-- Accessibility Disclosures -->
+    <string name="accessibility_service_label">Privacy Blur App Detection</string>
+    <string name="accessibility_service_description">Used strictly to detect when a protected application (such as WhatsApp) opens in the foreground so Privacy Blur can automatically display the privacy overlay. Privacy Blur does NOT read, inspect, store, or transmit your messages, keystrokes, or screen content.</string>
+    
+    <!-- Notifications -->
+    <string name="notification_channel_name">Protection Service</string>
+    <string name="notification_channel_desc">Shows ongoing status of Privacy Blur protection</string>
+    <string name="notification_title">Privacy Blur is Active</string>
+    <string name="notification_content">Protecting selected apps with privacy shield</string>
+    <string name="notification_action_stop">Stop</string>
+    
+    <!-- Privacy Statement -->
+    <string name="privacy_assurance">Privacy Blur does not read or store your messages.</string>
+</resources>
