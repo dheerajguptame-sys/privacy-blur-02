@@ -85,8 +85,8 @@ class PrivacyOverlayService : Service() {
                 protectedPackages = values[1] as Set<String>
                 overlayView?.updateSettings(
                     values[2] as com.privacyblur.app.data.RevealMode,
-                    values[3] as Long,
-                    values[4] as Float,
+                    values[3] as com.privacyblur.app.data.RevealDuration,
+                    values[4] as com.privacyblur.app.data.RevealAreaSize,
                     strength
                 )
                 evaluateOverlayState()
