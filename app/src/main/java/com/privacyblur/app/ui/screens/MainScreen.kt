@@ -38,6 +38,7 @@ fun MainScreen(viewModel: MainViewModel) {
     val hasNotification by viewModel.hasNotificationPermission.collectAsState()
 
     val scrollState = rememberScrollState()
+    var showAccessibilityDisclosure by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -261,7 +262,7 @@ fun MainScreen(viewModel: MainViewModel) {
                 PermissionRow(
                     title = "Accessibility Permission",
                     isGranted = hasAccessibility,
-                    onGrantClick = { viewModel.requestAccessibilityPermission() }
+                    onGrantClick = { showAccessibilityDisclosure = true }
                 )
                 PermissionRow(
                     title = "Notification Permission",
@@ -296,6 +297,29 @@ fun MainScreen(viewModel: MainViewModel) {
                 )
             )
         }
+    }
+
+    if (showAccessibilityDisclosure) {
+        AlertDialog(
+            onDismissRequest = { showAccessibilityDisclosure = false },
+            title = { Text("Accessibility access") },
+            text = {
+                Text(
+                    "Privacy Blur uses Android Accessibility access only to detect when you switch to an app you selected for protection, so it can show the privacy overlay at the right time. " +
+                    "The service is configured not to retrieve window content, and Privacy Blur does not use this access to read or store your messages. " +
+                    "Accessibility access is optional; without it, automatic protected-app detection will not work."
+                )
+            },
+            confirmButton = {
+                Button(onClick = {
+                    showAccessibilityDisclosure = false
+                    viewModel.requestAccessibilityPermission()
+                }) { Text("Agree & Continue") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAccessibilityDisclosure = false }) { Text("Not Now") }
+            }
+        )
     }
 }
 
